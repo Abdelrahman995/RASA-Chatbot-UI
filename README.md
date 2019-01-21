@@ -5,5 +5,7 @@ Added Support for
 - Buttons
 - Images
 
-Instructions:
-https://youtu.be/vx8DhOipdyw
+![ScreenShot](https://github.com/JiteshGaikwad/RASA-Chatbot-UI/blob/master/ui1.PNG)
+
+![ScreenShot](https://github.com/JiteshGaikwad/RASA-Chatbot-UI/blob/master/ui2.PNG)
+
