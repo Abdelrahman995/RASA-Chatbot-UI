@@ -128,8 +128,6 @@ $(document).ready(function () {
 				var msg = "";
 				for (var i = 0; i < val.length; i++) {
 					if (val[i]["image"]) { //check if there are any images
-
-						console.log("yes");
 						msg += '<p class="botResult"><img  width="200" height="124" src="' + val[i].image + '/"></p><div class="clearfix"></div>';
 					} else {
 						msg += '<p class="botResult">' + val[i].text + '</p><div class="clearfix"></div>';
