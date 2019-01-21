@@ -77,16 +77,27 @@ $(document).ready(function () {
 
 
 		$.ajax({
-			url: 'http://localhost:5005/conversations/user1/respond', //  RASA API
+			url: 'http://localhost:5002/webhooks/rest/webhook', //  RASA API
 			type: 'POST',
 			headers: {
 				'Content-Type': 'application/json'
 			},
 			data: JSON.stringify({
-				"query": text
+				"sender": "Rasa2",
+				"message": text
 			}),
 			success: function (data, textStatus, xhr) {
 				console.log(data);
+
+				if (Object.keys(data).length !== 0) {
+					for (i = 0; i < Object.keys(data[0]).length; i++) {
+						if (Object.keys(data[0])[i] == "buttons") { //check if buttons(suggestions) are present.
+							addSuggestion(data[0]["buttons"])
+						}
+
+					}
+				}
+
 				setBotResponse(data);
 
 			},
@@ -116,7 +127,14 @@ $(document).ready(function () {
 				//if we get message from the bot succesfully
 				var msg = "";
 				for (var i = 0; i < val.length; i++) {
-					msg += '<p class="botResult">' + val[i].text + '</p><div class="clearfix"></div>';
+					if (val[i]["image"]) { //check if there are any images
+
+						console.log("yes");
+						msg += '<p class="botResult"><img  width="200" height="124" src="' + val[i].image + '/"></p><div class="clearfix"></div>';
+					} else {
+						msg += '<p class="botResult">' + val[i].text + '</p><div class="clearfix"></div>';
+					}
+
 				}
 				BotResponse = msg;
 				$(BotResponse).appendTo('#result_div');
@@ -153,5 +171,33 @@ $(document).ready(function () {
 	function hideSpinner() {
 		$('.spinner').hide();
 	}
+
+
+
+
+	//------------------------------------------- Buttons(suggestions)--------------------------------------------------
+	function addSuggestion(textToAdd) {
+		setTimeout(function () {
+			var suggestions = textToAdd;
+			var suggLength = textToAdd.length;
+			$('<p class="suggestion"></p>').appendTo('#result_div');
+			// Loop through suggestions
+			for (i = 0; i < suggLength; i++) {
+				$('<span class="sugg-options">' + suggestions[i].title + '</span>').appendTo('.suggestion');
+			}
+			scrollToBottomOfResults();
+		}, 1000);
+	}
+
+
+	// on click of suggestions get value and send to API.AI
+	$(document).on("click", ".suggestion span", function () {
+		var text = this.innerText;
+		setUserResponse(text);
+		send(text);
+		$('.suggestion').remove();
+	});
+	// Suggestions end -----------------------------------------------------------------------------------------
+
 
 });
