@@ -83,7 +83,7 @@ $(document).ready(function () {
 				'Content-Type': 'application/json'
 			},
 			data: JSON.stringify({
-				"sender": "Rasa2",
+				"sender": "user",
 				"message": text
 			}),
 			success: function (data, textStatus, xhr) {
